@@ -1,0 +1,13 @@
+{
+  "name": "angular-dynamic-i18n",
+  "version": "0.0.1a",
+  "main": "i18nDynamic.js, i18nDynDictionary.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
