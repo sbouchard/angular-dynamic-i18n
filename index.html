@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+
+<html ng-app="dynamic_i18n_app" lang="en">
+
+<head>
+	<meta charset="UTF-8"> 
+		
+	<meta name="keywords" content="angular.js,i18n,javascript,filter,service">
+	<meta name="description" content="AngularJS service and filter to be able to switch language dynamically, with no need to do a full page refresh.">
+
+	<!-- TODO SLY -->
+	<!-- <meta name="google-site-verification" content="QFEOB2Fyq66-Wrfr98ihD_A6eGryMzQPXV9fSSVpRZA"> -->
+	
+	<title>s-bouchard/angular-dynamic-i18n &mdash; Dynamic i18n for Angular.js</title>
+	
+	<link rel="stylesheet" type="text/css" href="css/prettify.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/angular-google-maps.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css">
+	
+<script>
+  	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  	})(window,document,'script','http://www.google-analytics.com/analytics.js','ga');
+
+  	ga('create', 'UA-42284223-1', 'sbouchard.com');
+  	ga('send', 'pageview');
+
+</script>
+</head>
+
+<body ng-controller="exampleCtrl" ng-cloak>
+	
+	<div class="container">
+		<div class="navbar">
+	    	<div class="navbar-inner">
+	    		
+	    			<a class="brand" href="#">s-bouchard/angular-dynamic-i18n</a>
+	    			
+	    			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+	    	</div>
+	    </div>
+		
+		<div class="hero-unit">
+			<h1>Dynamic i18n for Angular.js</h1>
+			<br>
+			<p>Simple to use <a href="http://angularjs.org/" rel="external">Angular.js</a> service &amp; filter to be able to switch locale dynamically, with no need to do a full page refresh. </p>
+			
+			<hr><br>
+			
+			<div class="pull-left">
+
+				<!-- TODO -->
+				<a class="call-to-action btn-large btn-primary" href="https://raw.github.com/nlaplante/angular-google-maps/master/src/angular-google-maps.js" rel="external" category="Actions">Download</a>
+				<a class="call-to-action btn-large" href="https://github.com/s-bouchard/angular-dynamic-i18n" rel="external" category="Actions">View on GitHub</a>
+
+			</div>			
+			
+		</div>
+		
+		<p>AngularJS use a multiple files approach to handle the internationalization. In that case, if you need to switch locale dynamicly, you need a full page refresh to import the new locale file needed for the new language.</p>
+
+		<p>I want to share with you my approach on how I resolve the full page refresh using a custom filter and an angular service to handle the dictionary and the language switching.</p>			
+
+		
+		<h3>Already using it?</h3>
+		
+		<p>If you find any bug in the product, or would like a feature implemented, use the 
+		<a href="https://github.com/s-bouchard/angular-dynamic-i18n/issues" rel="external">issue tracker</a> over at the GitHub repository.</p>
+
+
+
+		<div class="tabbable"> <!-- Only required for left/right tabs -->
+		  <ul class="nav nav-tabs">
+		    <li class="active"><a href="#ssage" data-toggle="tab">Usage</a></li>
+		    <li><a href="#api" data-toggle="tab">API</a></li>
+		    <li><a href="#example" data-toggle="tab">Example</a></li>
+		  </ul>
+		  <div class="tab-content">
+		    <div class="tab-pane active" id="usage">
+		      	<p>
+		      		<strong>Step 1</strong>: is to write your own i18nDictionary angular service.
+		      		This service is responsible to fetch/load the dictionary for a certain locale.
+		      		<br>
+		      		The only requirement, is that the result is a JSON object containing a list of KEY:VALUE pair.
+		      		<br><br>
+		      		Ex:  {'myKey':'value1', 'my_Key2':'value2', 'my.key.3':'value3'};<br><br>
+
+		      		In the repository, you'll find a i18nDictionary template example.
+		      	</p>		
+				<p><strong>Step 2</strong>: Import the .JS files<br>
+					<div class="well">
+						<ul>
+							<li>i18nDynLanguage.js</li>
+							<li>i18nDynDictionary.js</li>
+						</ul>
+					</div>
+				</p>		      	
+				<p><strong>Step 3</strong>: 
+					When creating your angular app, just add <strong>i18nDynamic</strong>  as a dependency.<br>
+				</p>
+				<p><strong>Step 4</strong>: 
+					Use the i18n filter in your template.<br>
+					<div class="well">
+						<span ng:non-bindable>{{'hello.world' | i18n}}</span>
+					</div>
+				</p>				
+		    </div>
+		    <div class="tab-pane" id="api">
+		      <p><strong>setLocale(newLanguage)</strong>: To switch to a new locale.<br>
+                 newLanguage: any language string as defined by i18n convention ex: 'en', 'fr-ca', 'es', ...<br><br>
+                 Don't forget that your i18nDynDictionary implementation need to be able to load/fetch dictionary for this locale.
+              </p>
+		    </div>
+		    <div class="tab-pane" id="example" ng-controller="exampleCtrl">
+		      <p>		
+		      		<h3>Example to translate</h3>
+					Current language: {{language}}
+					<hr>
+					<table class="table">
+						<thead>
+							<tr>
+								<td><strong>Key</strong></td>
+								<td><strong>Message</strong></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>key1</td>
+								<td>{{"key1" | i18nDyn }}</td>
+							</tr>
+							<tr>
+								<td>key2</td>
+								<td>{{"key2" | i18nDyn }}</td>
+							</tr>
+							<tr>
+								<td>key3</td>
+								<td>{{"key3" | i18nDyn }}</td>
+							</tr>
+						</tbody>
+					</table></p>
+
+					<p>
+					AngularJS date filter unaltered
+					<hr>
+					Date: {{1288323623006 | date:'longDate'}}</p>
+
+					<hr>
+					<input class="btn" type="button" ng-click="changeLocale('en')" value="English">
+					<input class="btn" type="button" ng-click="changeLocale('fr')" value="Francais">
+					<input class="btn" type="button" ng-click="changeLocale('es-es')" value="Espanol">
+		    </div>		    
+		  </div>
+		</div>
+
+
+		
+		<footer>
+			<div class="row">
+				<div class="span6">
+					Copyright &copy; 2013 <a rel="author external" href="https://plus.google.com/105591649853945868882?rel=author">Sylvain Bouchard</a>. All rights reserved.
+				</div>
+				
+				<div class="span6 pull-right">
+					Built using <a href="http://angularjs.org" rel="external">Angular.js</a>
+					and <a href="http://twitter.github.com/bootstrap" rel="external">Twitter Bootstrap</a>.
+				</div>
+			</div>
+		</footer>
+		
+	</div>
+	
+	<a id="forkme" href="https://github.com/s-bouchard/angular-dynamic-i18n" rel="external">
+		<img style="position: fixed; top: 0; right: 0; border: 0; z-index: 1040" 
+			src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub">
+	</a>
+	
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="js/prettify.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
+	<script type="text/javascript" src="http://code.angularjs.org/1.0.4/angular-bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/i18nDynLanguage.js"></script>
+	<script type="text/javascript" src="js/i18nDynDictionary.js"></script>
+	<script type="text/javascript" src="js/demo-controller.js"></script>
+	<script>
+		$(function () {
+			prettyPrint();			
+			$("a[rel~=external]").attr("target", "_blank");
+		});
+	</script>
+	
+</body>
+
+</html>
