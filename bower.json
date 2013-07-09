@@ -1,9 +1,9 @@
 {
   "name": "angular-dynamic-i18n",
   "version": "0.0.1-alpha",
-  "main": ["
-    i18nDynamic.js, 
-    i18nDynDictionary.js"
+  "main": [
+    "i18nDynamic.js", 
+    "i18nDynDictionary.js"
   ],
   "ignore": [
     "**/.*",
